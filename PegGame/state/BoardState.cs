@@ -20,7 +20,62 @@ public class BoardState
         SetInitialPeg(x, y);
     }
 
-    public void UpdateState(Move move)
+    protected BoardState()
+    {
+        _locations = LoadLocations();
+    }
+
+    #region Setup
+
+    private List<Location> LoadLocations()
+    {
+        // Parse JSON board
+        string locationsFile = File.ReadAllText("state/locations.json");
+        var locations = JsonConvert.DeserializeObject<List<Location>>(locationsFile);
+        if (locations == null)
+            throw new SerializationException("Error While Deserializing Locations");
+        
+        return locations;
+    }
+    
+    protected void SetInitialPeg(int x, int y)
+    {
+        // Set initial empty location
+        var startingLocation = GetLocation(x, y);
+        if (startingLocation == null)
+            throw new Exception($"Invalid Starting Location: X:{x}, Y:{y}");
+        
+        startingLocation.HasPeg = false;
+    }
+    
+    #endregion
+    
+    public List<Location> GetAvailablePegs(Location location)
+    {
+        Guard.Against.Null(location);
+        
+        if (location.HasPeg)
+            throw new ArgumentException("Location has Peg");
+        
+        var locationsWithPegs = _locations.Where(l => l.HasPeg).ToList();
+
+        return locationsWithPegs.Where(l =>
+                l.HasPeg
+                && ()
+            )
+            .ToList();
+
+        // return _locations.Where(l => 
+        //         l.HasPeg 
+        //         && (l.X + 2 == location.X 
+        //             || l.X - 2 == location.X 
+        //             || l.Y + 2 == location.Y 
+        //             || l.Y - 2 == location.Y)
+        //     )
+        //     .ToList();
+    }
+    
+    public void MakeMove(Move move)
     {
         Guard.Against.Null(move);
 
@@ -53,35 +108,4 @@ public class BoardState
     
     #endregion
 
-    private List<Location> GetAvailablePegs(Location location)
-    {
-        // TODO test this!
-        return Locations.Where(l => 
-                l.HasPeg 
-                && (l.X + 2 == location.X || l.X - 2 == location.X) 
-                && (l.Y + 2 == location.Y || l.Y - 2 == location.Y)
-            )
-            .ToList();
-    }
-    
-    private List<Location> LoadLocations()
-    {
-        // Parse JSON board
-        string locationsFile = File.ReadAllText("state/locations.json");
-        var locations = JsonConvert.DeserializeObject<List<Location>>(locationsFile);
-        if (locations == null)
-            throw new SerializationException("Error While Deserializing Locations");
-        
-        return locations;
-    }
-
-    private void SetInitialPeg(int x, int y)
-    {
-        // Set initial empty location
-        var startingLocation = GetLocation(x, y);
-        if (startingLocation == null)
-            throw new Exception($"Invalid Starting Location: X:{x}, Y:{y}");
-        
-        startingLocation.HasPeg = false;
-    }
 }

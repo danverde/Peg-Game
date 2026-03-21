@@ -1,0 +1,44 @@
+X
+X   X
+X   X   X
+X   X   X   X 
+X   X   O   X   X
+
+
+
+        X
+      X   X
+    X   X   X
+  X   X   X   X 
+X   X   O   X   X
+
+
+For Straight across or above/below
+X +/- 2 AND Y is the same
+OR
+Y +/- 2 AND X is the same
+
+For diagonal...
+Y +/- 2 AND X is the same
+
+
+
+y +/- 2 AND x is same OR +/- 2... problem is we're using a
+
+
+X: 3
+Y: 1
+
+
+x +/- 2
+OR
+y +/- 2
+
+1, 1 | 2
+5, 1 | 6
+1, 3 | 4
+3, 3 | 6
+
+
+X: 1
+Y: 1

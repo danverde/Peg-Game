@@ -1,0 +1,77 @@
+[
+  {
+    "X": 1,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 2,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 3,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 4,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 5,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 1,
+    "Y": 2,
+    "HasPeg": true
+  },
+  {
+    "X": 2,
+    "Y": 2,
+    "HasPeg": true
+  },
+  {
+    "X": 3,
+    "Y": 2,
+    "HasPeg": true
+  },
+  {
+    "X": 4,
+    "Y": 2,
+    "HasPeg": true
+  },
+  {
+    "X": 1,
+    "Y": 3,
+    "HasPeg": true
+  },
+  {
+    "X": 2,
+    "Y": 3,
+    "HasPeg": true
+  },
+  {
+    "X": 3,
+    "Y": 3,
+    "HasPeg": true
+  },
+  {
+    "X": 1,
+    "Y": 4,
+    "HasPeg": true
+  },
+  {
+    "X": 2,
+    "Y": 4,
+    "HasPeg": true
+  },
+  {
+    "X": 1,
+    "Y": 5,
+    "HasPeg": true
+  }
+]

@@ -12,34 +12,10 @@ public class BoardStateTests
 
     public BoardStateTests()
     {
-        _boardState = new BoardState(1,1);
+        _boardState = new BoardState(0, 0);
     }
 
     #region Constructor
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Constructor_NegativeOrZeroX_ShouldThrow(int x)
-    {
-        // Arrange
-        Action act = () => new BoardState(x, 1);
-        
-        // Assert
-        act.Should().Throw<ArgumentException>().WithParameterName(nameof(x));
-    } 
-    
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Constructor_NegativeOrZeroY_ShouldThrow(int y)
-    {
-        // Arrange
-        Action act = () => new BoardState(1, y);
-        
-        // Assert
-        act.Should().Throw<ArgumentException>().WithParameterName(nameof(y));
-    }
 
     [Fact]
     public void Constructor_ShouldSetLocations()
@@ -48,8 +24,8 @@ public class BoardStateTests
         BoardState board = new BoardStateProctor();
         
         // Assert
-        board.Locations.Should().HaveCount(15);
-        board.Locations.All(l => l.HasPeg).Should().BeTrue();
+        board.Locations.Should().HaveCount(45);
+        board.Locations.Where(l => l.HasSlot && l.HasPeg).Count().Should().Be(15);
     }
     
     [Theory]
@@ -66,19 +42,31 @@ public class BoardStateTests
     }
     
     [Theory]
-    [InlineData(6,1)]
-    [InlineData(5,2)]
-    [InlineData(4,3)]
-    [InlineData(3,4)]
-    [InlineData(2,5)]
-    [InlineData(1,6)]
-    public void Constructor_CoordinatesOutOfRange_ShouldThrow(int x, int y)
+    [InlineData(6)]
+    [InlineData(5)]
+    [InlineData(-5)]
+    [InlineData(-6)]
+    public void Constructor_XCoordinateOutOfRange_ShouldThrow(int x)
     {
         // Arrange
-        Action act = () => new BoardState(x, y);
+        Action act = () => new BoardState(x, 0);
         
         // Assert
-        act.Should().Throw<Exception>().WithMessage($"Invalid Starting Location: X:{x}, Y:{y}");
+        act.Should().Throw<ArgumentOutOfRangeException>().WithParameterName(nameof(x));
+    }
+    
+    [Theory]
+    [InlineData(6)]
+    [InlineData(5)]
+    [InlineData(-5)]
+    [InlineData(-6)]
+    public void Constructor_YCoordinateOutOfRange_ShouldThrow(int y)
+    {
+        // Arrange
+        Action act = () => new BoardState(0, y);
+        
+        // Assert
+        act.Should().Throw<ArgumentOutOfRangeException>().WithParameterName(nameof(y));
     }
 
     #endregion

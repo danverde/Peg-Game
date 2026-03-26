@@ -4,10 +4,10 @@ using PegGame.models;
 
 
 var Game = new Game();
-List<Move> solution = Game.Solve(3, 1);
+List<Move> solution = Game.Solve(0, 0);
 
 string sol = JsonConvert.SerializeObject(solution);
-Console.WriteLine(sol);
+Console.WriteLine($"Solution: {sol}");
 
 
 

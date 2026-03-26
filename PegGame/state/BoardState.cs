@@ -13,8 +13,8 @@ public class BoardState
     
     public BoardState(int x, int y)
     {
-        Guard.Against.NegativeOrZero(x);
-        Guard.Against.NegativeOrZero(y);
+        Guard.Against.OutOfRange(x, nameof(x), -4, 4);
+        Guard.Against.OutOfRange(y, nameof(y), -4, 4);
         
         _locations = LoadLocations();
         SetInitialPeg(x, y);
@@ -49,6 +49,26 @@ public class BoardState
     }
     
     #endregion
+
+    public void RenderState()
+    {
+        Console.WriteLine("Rendering Board State:");
+        // throw new NotImplementedException();
+        
+        for (int i = 4; i >= 0; i--)
+        {
+            var row = _locations
+                .Where(l => l.Y == i)
+                .Select(l => l.RenderChar())
+                .ToList();
+
+            if (row.Any())
+                Console.WriteLine(string.Join("", row));
+            
+        }
+        
+        Console.WriteLine();
+    }
     
     public List<Location> GetAvailablePegs(Location location)
     {
@@ -59,12 +79,6 @@ public class BoardState
         
         var locationsWithPegs = _locations.Where(l => l.HasPeg).ToList();
 
-        return locationsWithPegs.Where(l =>
-                l.HasPeg
-                && ()
-            )
-            .ToList();
-
         // return _locations.Where(l => 
         //         l.HasPeg 
         //         && (l.X + 2 == location.X 
@@ -73,6 +87,16 @@ public class BoardState
         //             || l.Y - 2 == location.Y)
         //     )
         //     .ToList();
+
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Gets all the places that a peg may be able to move from to 
+    /// </summary>
+    public List<Location> GetPossiblePegs(Location location)
+    {
+        throw new NotImplementedException();
     }
     
     public void MakeMove(Move move)

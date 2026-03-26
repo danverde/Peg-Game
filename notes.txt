@@ -1,22 +1,25 @@
-X
-X   X
-X   X   X
-X   X   X   X 
-X   X   O   X   X
-
-
 
         X
       X   X
-    X   X   X
+    D   X   D
   X   X   X   X 
 X   X   O   X   X
 
 
-For Straight across or above/below
+Straight Across:
 X +/- 2 AND Y is the same
+
+Above/below:
+NOT ALLOWED!
+
+Diagonal:
+Y +/-2 AND X is the same
 OR
-Y +/- 2 AND X is the same
+Y +/-2 AND x is +/- 2
+
+
+Also have to have a peg in between... FUCK!
+
 
 For diagonal...
 Y +/- 2 AND X is the same

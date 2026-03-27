@@ -23,4 +23,8 @@
       <ProjectReference Include="..\PegGame\PegGame.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="state\" />
+    </ItemGroup>
+
 </Project>

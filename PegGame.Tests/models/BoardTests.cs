@@ -1,18 +1,17 @@
 using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using PegGame.models;
-using PegGame.state;
 
-namespace PegGame.Tests.state;
+namespace PegGame.Tests.models;
 
 [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
-public class BoardStateTests
+public class BoardTests
 {
-    private readonly BoardState _boardState;
+    private readonly Board _board;
 
-    public BoardStateTests()
+    public BoardTests()
     {
-        _boardState = new BoardState(0, 0);
+        _board = new Board(0, 0);
     }
 
     #region Constructor
@@ -21,7 +20,7 @@ public class BoardStateTests
     public void Constructor_ShouldSetLocations()
     {
         // Arrange
-        BoardState board = new BoardStateProctor();
+        Board board = new BoardProctor();
         
         // Assert
         board.Locations.Should().HaveCount(45);
@@ -34,7 +33,7 @@ public class BoardStateTests
     public void Constructor_ValidCoordinates_ShouldSetInitialPeg(int x, int y)
     {
         // Arrange
-        BoardState board = new BoardState(x, y);
+        Board board = new Board(x, y);
         
         // Assert
         board.Locations.Where(l => l.HasPeg).Should().HaveCount(14);
@@ -49,7 +48,7 @@ public class BoardStateTests
     public void Constructor_XCoordinateOutOfRange_ShouldThrow(int x)
     {
         // Arrange
-        Action act = () => new BoardState(x, 0);
+        Action act = () => new Board(x, 0);
         
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>().WithParameterName(nameof(x));
@@ -63,7 +62,7 @@ public class BoardStateTests
     public void Constructor_YCoordinateOutOfRange_ShouldThrow(int y)
     {
         // Arrange
-        Action act = () => new BoardState(0, y);
+        Action act = () => new Board(0, y);
         
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>().WithParameterName(nameof(y));
@@ -78,7 +77,7 @@ public class BoardStateTests
     {
         // Arrange
         Location location = null!;
-        Action act = () => _boardState.GetAvailablePegs(location);
+        Action act = () => _board.GetAvailablePegs(location);
         
         // Assert
         act.Should().Throw<ArgumentNullException>().WithParameterName(nameof(location));
@@ -90,7 +89,7 @@ public class BoardStateTests
         // Arrange
         Location location = new Location { X = 1, Y = 1, HasPeg = true };
         
-        Action act = () => _boardState.GetAvailablePegs(location);
+        Action act = () => _board.GetAvailablePegs(location);
         
         // Assert
         act.Should().Throw<ArgumentException>().WithMessage("Location has Peg");
@@ -112,7 +111,7 @@ public class BoardStateTests
         ];
         
         // Act
-        List<Location> result = _boardState.GetAvailablePegs(l);
+        List<Location> result = _board.GetAvailablePegs(l);
         
         // Arrange
         result.Should()

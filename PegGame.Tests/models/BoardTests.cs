@@ -20,11 +20,12 @@ public class BoardTests
     public void Constructor_ShouldSetLocations()
     {
         // Arrange
-        Board board = new BoardProctor();
+        int locationCount = _board.Locations.Count;
+        int pegCount = _board.Locations.Count(l => l.HasPeg);
         
         // Assert
-        board.Locations.Should().HaveCount(45);
-        board.Locations.Where(l => l.HasSlot && l.HasPeg).Count().Should().Be(15);
+        locationCount.Should().Be(45);
+        pegCount.Should().Be(14);
     }
     
     [Theory]

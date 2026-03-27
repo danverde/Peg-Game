@@ -6,6 +6,19 @@
 X   X   O   X   X
 
 
+Find Next: 
+0,0 -> 2,0 => 
+0,0 -> -2,0 => 
+
+Diagonal:
+0,0 -> 1,1 -> 2,2
+
+
+Adjacent:
+y same AND x +/- 4
+OR
+y +/- 1 and x +/- 1
+
 Straight Across:
 X +/- 2 AND Y is the same
 

@@ -15,9 +15,9 @@ public class Game
         
         board.Render();
         
+        // Recursively do the thing!
         List<Location> emptySlots = board.GetEmptySlots();
 
-        // Recursively do the thing!
         foreach (Location emptySlot in emptySlots)
         {
             List<Move> possibleMoves = board.GetPossibleMovesForSlot(emptySlot);

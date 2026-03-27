@@ -26,7 +26,7 @@ public class Board
         _locations = LoadLocations();
     }
 
-    #region Setup
+    #region Setup Methods
 
     private List<Location> LoadLocations()
     {
@@ -144,18 +144,8 @@ public class Board
     #region GetLocation
 
     public Location GetLocation(int x, int y) => _locations.Single(l => l.X == x && l.Y == y);
-    private Location? GetLocationOrDefault(int x, int y) => _locations.SingleOrDefault(l => l.X == x && l.Y == y);
     
-    private Location? GetLocationOrDefault(Location location) => GetLocationOrDefault(location.X, location.Y);
-    
-    private Location? GetLocationOrDefault(Move move)
-    {
-        // TODO verify this...
-        var x = Math.Abs(move.From.X - move.To.X);
-        var y = Math.Abs(move.From.Y - move.To.Y);
-
-        return GetLocationOrDefault(x, y);
-    }
+    public Location? GetLocationOrDefault(int x, int y) => _locations.SingleOrDefault(l => l.X == x && l.Y == y);
     
     #endregion
 

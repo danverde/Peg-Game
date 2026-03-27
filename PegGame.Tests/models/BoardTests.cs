@@ -69,55 +69,89 @@ public class BoardTests
     }
 
     #endregion
-    
-    #region GetAvailablePegs
+
+    #region GetEmptySlots
 
     [Fact]
-    public void GetAvailablePegs_NullLocation_ShouldThrow()
+    public void GetEmptySlots_ShouldReturnEmptySlots()
     {
         // Arrange
-        Location location = null!;
-        Action act = () => _board.GetAvailablePegs(location);
-        
-        // Assert
-        act.Should().Throw<ArgumentNullException>().WithParameterName(nameof(location));
-    }
-    
-    [Fact]
-    public void GetAvailablePegs_LocationHasPeg_ShouldThrow()
-    {
-        // Arrange
-        Location location = new Location { X = 1, Y = 1, HasPeg = true };
-        
-        Action act = () => _board.GetAvailablePegs(location);
-        
-        // Assert
-        act.Should().Throw<ArgumentException>().WithMessage("Location has Peg");
-    }
-    
-
-    [Fact]
-    public void GetAvailablePegs_ValidLocation_AllLocationsHavePegs_ShouldReturnLocations()
-    {
-        // Arrange
-        Location l = new Location { X = 3, Y = 1, HasPeg = false };
-        
-        List<Location> expected =
-        [
-            new() {X = 1, Y = 1, HasPeg = true},
-            new() {X = 5, Y = 1, HasPeg = true},
-            new() {X = 1, Y = 3, HasPeg = true},
-            new() {X = 3, Y = 3, HasPeg = true}
-        ];
+        var expected = _board.Locations.Single(l => l.X == 0 && l.Y == 0); 
         
         // Act
-        List<Location> result = _board.GetAvailablePegs(l);
+        var result =  _board.GetEmptySlots();
         
         // Arrange
-        result.Should()
-            .HaveCount(expected.Count)
-            .And.BeEquivalentTo(expected);
+        result.Should().HaveCount(1);
+        result.Should().Contain(expected);
+    }
+
+    #endregion
+    
+    #region GetLocation
+    
+    [Fact]
+    public void GetLocation_ValidLocation_ShouldReturnALocation()
+    {
+        // Act
+        Location result = _board.GetLocation(0, 0);
+
+        // Assert
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void GetLocation_InvalidLocation_ShouldThrow()
+    {
+        // Act
+        Action act = () => _board.GetLocation(100, 100);
+
+        // Assert
+        act.Should().Throw<InvalidOperationException>();
     }
     
     #endregion
+    
+    #region GetLocationOrDefault
+    
+    [Fact]
+    public void GetLocationOrDefault_ValidLocation_ShouldReturnALocation()
+    {
+        // Act
+        Location? result = _board.GetLocationOrDefault(0, 0);
+
+        // Assert
+        result.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void GetLocationOrDefault_InvalidLocation_ShouldReturnNull()
+    {
+        // Act
+        Location? result = _board.GetLocationOrDefault(100, 100);
+
+        // Assert
+        result.Should().BeNull();
+    }
+    
+    #endregion
+    
+    #region Clone
+    
+    [Fact]
+    public void Clone_ShouldCloneBoard()
+    {
+        // Arrange
+        
+        // Act
+        var newBoard = _board.Clone();
+        newBoard.Locations.Single(l => l.X == 0 && l.Y == 0).HasPeg = true;
+        
+        // Assert
+        newBoard.GetLocation(0, 0).HasPeg.Should().BeTrue();
+        _board.GetLocation(0, 0).HasPeg.Should().BeFalse();
+    }
+    
+    #endregion
+    
 }

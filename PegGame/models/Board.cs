@@ -112,9 +112,14 @@ public class Board
     {
         Guard.Against.Null(move);
 
-        RemovePeg(move.From);
-        RemovePeg(move.Over);
-        PlacePeg(move.To);
+        // Have to grab them again to make sure we're impacting the current board!
+        Location from = GetSlot(move.From.X, move.From.Y);
+        Location over = GetSlot(move.Over.X, move.Over.Y);
+        Location to = GetSlot(move.To.X, move.From.Y);
+        
+        RemovePeg(from);
+        RemovePeg(over);
+        PlacePeg(to);
         
         _moves.Add(move);
     }
@@ -153,8 +158,7 @@ public class Board
     
     internal void Render()
     {
-        Console.WriteLine("Rendering Board State:");
-        // throw new NotImplementedException();
+        Console.WriteLine("Board State:");
         
         for (int i = 4; i >= 0; i--)
         {

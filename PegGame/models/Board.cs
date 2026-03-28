@@ -42,6 +42,8 @@ public class Board
     
     #endregion
 
+    public bool IsComplete() => _locations.Count(s => s.HasPeg) == 1;
+
     public List<Location> GetEmptySlots() => _locations.Where(l => l.HasSlot && !l.HasPeg).ToList();
     
     public Location GetSlot(int x, int y) => _locations.Single(l => l.HasSlot && l.X == x && l.Y == y);

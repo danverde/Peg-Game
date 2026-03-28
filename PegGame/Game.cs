@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Ardalis.GuardClauses;
 using PegGame.models;
 
@@ -10,26 +11,57 @@ public class Game
         Guard.Against.OutOfRange(x, nameof(x), -4, 4);
         Guard.Against.OutOfRange(y, nameof(y), -4, 4);
         
-        var moves = new List<Move>();
         var board = new Board(x, y);
-        
         board.Render();
         
         // Recursively do the thing!
-        List<Location> emptySlots = board.GetEmptySlots();
+        var allBoards = DoTheThing(new List<Board> {board});
+        
+        var winningBoard = allBoards.FirstOrDefault(b => b.IsComplete());
 
-        foreach (Location emptySlot in emptySlots)
+        if (winningBoard == null)
         {
-            List<Move> possibleMoves = board.GetPossibleMovesForSlot(emptySlot);
-            
-            // foreach (Move possibleMove in possibleMoves)
-            // {
-            //     board   
-            // }
+            Console.WriteLine("No winning solution found");
+            Debugger.Break();
+            throw new Exception("I broke");
         }
+            
         
+        return winningBoard.Moves.ToList();
+    }
+
+    // private List<Board> DoTheThing(Board board, List<Board> allBoards)
+    private List<Board> DoTheThing(List<Board> boards, int callCount = 0)
+    {
+        if (callCount == 20)
+            throw new Exception("infinite loop detected");
+
+        callCount++;
+
+        var newBoards = new List<Board>();
         
-        return moves;
+        foreach (var board in boards)
+        {
+            List<Location> emptySlots = board.GetEmptySlots();
+
+            foreach (Location emptySlot in emptySlots)
+            {
+                List<Move> possibleMoves = board.GetPossibleMovesForSlot(emptySlot);
+                
+                foreach (Move possibleMove in possibleMoves)
+                {
+                    var newBoard = board.Clone();
+                    newBoard.MakeMove(possibleMove);
+                    // newBoard.Render();
+                    newBoards.Add(newBoard);
+                }
+            }
+        }
+
+        if (newBoards.Any(b => b.IsComplete()))
+            return boards;
+        else
+            return DoTheThing(newBoards, callCount);
     }
     
 }

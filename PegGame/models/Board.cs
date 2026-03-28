@@ -9,7 +9,7 @@ public class Board
     public IReadOnlyList<Location> Locations => _locations;
     public IReadOnlyList<Move> Moves => _moves;
     
-    private readonly List<Location> _locations;
+    private readonly List<Location> _locations = new ();
     private List<Move> _moves = [];
     
     public Board(int x, int y)
@@ -22,10 +22,8 @@ public class Board
         RemovePeg(startingLocation);
     }
 
-    protected Board()
-    {
-        _locations = LoadLocations();
-    }
+    [JsonConstructor]
+    public Board() { }
 
     #region Setup Methods
 

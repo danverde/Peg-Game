@@ -36,6 +36,7 @@ public class Game
         if (callCount == 20)
             throw new Exception("infinite loop detected");
 
+        Console.WriteLine($"Call Count: {callCount}");
         callCount++;
 
         var newBoards = new List<Board>();

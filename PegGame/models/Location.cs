@@ -7,7 +7,7 @@ public class Location
     public Location() {}
 
     [JsonConstructor]
-    public Location(int x, int y, bool hasPeg, bool hasSlot)
+    public Location(int x, int y, bool hasSlot, bool hasPeg = false)
     {
         X = x;
         Y = y;
@@ -20,7 +20,7 @@ public class Location
 
     public bool HasPeg { get; set; } 
 
-    public bool HasSlot { get; set; }
+    public bool HasSlot { get; }
 
     public string RenderChar()
     {

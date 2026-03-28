@@ -7,7 +7,7 @@ public class Game
 {
     public List<Move> Solve(int x, int y)
     {
-        Guard.Against.OutOfRange(x, nameof(x), -5, 5);
+        Guard.Against.OutOfRange(x, nameof(x), -4, 4);
         Guard.Against.OutOfRange(y, nameof(y), -4, 4);
         
         var moves = new List<Move>();

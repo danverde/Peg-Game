@@ -24,7 +24,7 @@ public class LocationTests
         const bool hasSlot = true;
         
         // Act
-        var result = new Location(x, y, hasPeg, hasSlot);
+        var result = new Location(x, y, hasSlot, hasPeg);
         
         // Assert
         result.X.Should().Be(x);

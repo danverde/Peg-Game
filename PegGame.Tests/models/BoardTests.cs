@@ -71,6 +71,74 @@ public class BoardTests
 
     #endregion
 
+    // TODO MakeMove
+    
+    #region GetPossibleMovesForSlot
+
+    [Fact]
+    public void GetPossibleMovesForSlot_ValidSlot_ShouldReturnAllPossibleMoves()
+    {
+        // Arrange
+        
+        // testing a spot other than 0,0
+        Location slot = _board.GetSlot(2, 2);
+        slot.HasPeg = false;
+        
+        _board.GetSlot(0, 0).HasPeg = true; 
+        _board.GetSlot(4, 0).HasPeg = false; // excludes moves without a valid From location
+        _board.GetSlot(1, 1).HasPeg = false; // excludes moves without a valid To location
+
+        var expected = new List<Move>
+        {
+            new() {To = slot, From = _board.GetSlot(0, 4), Over = _board.GetSlot(1, 3)},
+            new() {To = slot, From = _board.GetSlot(-2, 2), Over = _board.GetSlot(0, 2)},
+        };
+        
+        // Act
+        List<Move> result = _board.GetPossibleMovesForSlot(slot);
+        
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public void GetPossibleMovesForSlot_NullLocation_ShouldThrow()
+    {
+        // Arrange/Act
+        Action act = () => _board.GetPossibleMovesForSlot(null!);
+        
+        // Assert
+        act.Should().Throw<ArgumentNullException>().WithParameterName("slot");
+    }
+
+    [Fact]
+    public void GetPossibleMovesForSlot_LocationHasNoSlot_ShouldThrow()
+    {
+        // Arrange
+        var location = new Location(0, 0, false);
+        
+        // Act
+        Action act = () => _board.GetPossibleMovesForSlot(location);
+        
+        // Assert
+        act.Should().Throw<ArgumentException>().WithParameterName("slot");
+    }
+    
+    [Fact]
+    public void GetPossibleMovesForSlot_LocationHasPeg_ShouldThrow()
+    {
+        // Arrange
+        var location = new Location(0, 0, true, true);
+        
+        // Act
+        Action act = () => _board.GetPossibleMovesForSlot(location);
+        
+        // Assert
+        act.Should().Throw<ArgumentException>().WithParameterName("slot");
+    }
+    
+    #endregion
+    
     #region GetEmptySlots
 
     [Fact]
@@ -89,23 +157,33 @@ public class BoardTests
 
     #endregion
     
-    #region GetLocation
+    #region GetSlot
     
     [Fact]
-    public void GetLocation_ValidLocation_ShouldReturnALocation()
+    public void GetSlot_ValidLocation_ShouldReturnALocation()
     {
         // Act
-        Location result = _board.GetLocation(0, 0);
+        Location result = _board.GetSlot(0, 0);
 
         // Assert
         result.Should().NotBeNull();
     }
 
     [Fact]
-    public void GetLocation_InvalidLocation_ShouldThrow()
+    public void GetSlot_LocationDoesNotExist_ShouldThrow()
     {
         // Act
-        Action act = () => _board.GetLocation(100, 100);
+        Action act = () => _board.GetSlot(100, 100);
+
+        // Assert
+        act.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void GetSlot_LocationDoesNotHaveSlot_ShouldThrow()
+    {
+        // Act
+        Action act = () => _board.GetSlot(1, 0);
 
         // Assert
         act.Should().Throw<InvalidOperationException>();
@@ -113,23 +191,33 @@ public class BoardTests
     
     #endregion
     
-    #region GetLocationOrDefault
+    #region GetSlotOrDefault
     
     [Fact]
-    public void GetLocationOrDefault_ValidLocation_ShouldReturnALocation()
+    public void GetSlotOrDefault_ValidLocation_ShouldReturnALocation()
     {
         // Act
-        Location? result = _board.GetLocationOrDefault(0, 0);
+        Location? result = _board.GetSlotOrDefault(0, 0);
 
         // Assert
         result.Should().NotBeNull();
     }
 
     [Fact]
-    public void GetLocationOrDefault_InvalidLocation_ShouldReturnNull()
+    public void GetSlotOrDefault_LocationDoesNotExist_ShouldReturnNull()
     {
         // Act
-        Location? result = _board.GetLocationOrDefault(100, 100);
+        Location? result = _board.GetSlotOrDefault(100, 100);
+
+        // Assert
+        result.Should().BeNull();
+    }
+    
+    [Fact]
+    public void GetSlotOrDefault_LocationDoesNotHaveSlot_ShouldReturnNull()
+    {
+        // Act
+        Location? result = _board.GetSlotOrDefault(1, 0);
 
         // Assert
         result.Should().BeNull();
@@ -149,8 +237,8 @@ public class BoardTests
         newBoard.Locations.Single(l => l.X == 0 && l.Y == 0).HasPeg = true;
         
         // Assert
-        newBoard.GetLocation(0, 0).HasPeg.Should().BeTrue();
-        _board.GetLocation(0, 0).HasPeg.Should().BeFalse();
+        newBoard.GetSlot(0, 0).HasPeg.Should().BeTrue();
+        _board.GetSlot(0, 0).HasPeg.Should().BeFalse();
     }
     
     #endregion

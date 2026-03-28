@@ -18,7 +18,8 @@ public class Board
         Guard.Against.OutOfRange(y, nameof(y), -4, 4);
         
         _locations = LoadLocations();
-        RemovePeg(x, y);
+        Location startingLocation = GetSlot(x, y);
+        RemovePeg(startingLocation);
     }
 
     protected Board()
@@ -41,74 +42,17 @@ public class Board
     
     #endregion
 
-    #region RemovePeg
-
-    private void RemovePeg(int x, int y)
-    {
-        // Set initial empty location
-        Location? location = GetLocationOrDefault(x, y);
-        if (location == null)
-            throw new Exception($"Specified Location does not exist: X:{x}, Y:{y}");
-        
-        RemovePeg(location);
-    }
-
-    private void RemovePeg(Location location)
-    {
-        Guard.Against.Null(location);
-        
-        if (!location.HasSlot)
-            throw new Exception($"Unable to remove peg from location: X:{location.X}, Y:{location.Y}");
-        
-        location.HasPeg = false;
-    }
+    public List<Location> GetEmptySlots() => _locations.Where(l => l.HasSlot && !l.HasPeg).ToList();
     
-    #endregion
-
-    #region PlacePeg
+    public Location GetSlot(int x, int y) => _locations.Single(l => l.HasSlot && l.X == x && l.Y == y);
     
-    private void PlacePeg(Location location)
-    {
-        Guard.Against.Null(location);
-
-        if (!location.HasSlot)
-            throw new Exception($"Unable to add Peg. Location missing slot: X:{location.X}, Y:{location.Y}");
-        
-        location.HasPeg = true;
-    }
+    public Location? GetSlotOrDefault(int x, int y) => _locations.SingleOrDefault(l => l.HasSlot && l.X == x && l.Y == y);
     
-    #endregion
-    
-    private bool SlotsAreAdjacent(Location l1, Location l2) => l1.Y == l2.Y && Math.Abs(l1.X - l2.X) == 2;
-    private bool SlotsAreDiagonal(Location l1, Location l2) => Math.Abs(l1.X - l2.X) == 1 && Math.Abs(l1.Y - l2.Y) == 1;
-    
-    private List<Location> GetAdjacentPegs(Location location)
-    {
-        Guard.Against.Null(location);
-
-        return _locations.Where(l =>
-                l.HasPeg
-                && (SlotsAreAdjacent(l, location)
-                    || SlotsAreDiagonal(l, location)))
-            .ToList();
-    }
-
-    public void MakeMove(Move move)
-    {
-        Guard.Against.Null(move);
-
-        RemovePeg(move.From);
-        RemovePeg(move.Over);
-        PlacePeg(move.To);
-        
-        _moves.Add(move);
-    }
-
     public List<Move> GetPossibleMovesForSlot(Location slot)
     {
         Guard.Against.Null(slot);
         if (!slot.HasSlot || slot.HasPeg)
-            throw new ArgumentException($"Location does not have a slot, or has a peg: X:{slot.X}, Y:{slot.Y}");
+            throw new ArgumentException($"Location does not have a slot, or has a peg: X:{slot.X}, Y:{slot.Y}", nameof(slot));
         
         // get adjacent locations with pegs
         List<Location> adjacentLocations = GetAdjacentPegs(slot);
@@ -117,15 +61,23 @@ public class Board
         var moves = new List<Move>();
         foreach (Location adjacentLocation in adjacentLocations)
         {
-            int xDiff = slot.X - adjacentLocation.X;
-            int yDiff = slot.Y - adjacentLocation.Y;
+            int xDiff = Math.Abs(slot.X - adjacentLocation.X);
+            int yDiff = Math.Abs(slot.Y - adjacentLocation.Y);
+            
+            bool xIsDecreasing = slot.X > adjacentLocation.X;
+            bool yIsDecreasing = slot.Y > adjacentLocation.Y;
 
+            if (xIsDecreasing)
+                xDiff *= -1;
+            if (yIsDecreasing)
+                yDiff *= -1;
+            
             int x = adjacentLocation.X + xDiff;
             int y = adjacentLocation.Y + yDiff;
             
-            Location? fromLocation = GetLocationOrDefault(x, y);
+            Location? fromLocation = GetSlotOrDefault(x, y);
             
-            if (fromLocation == null)
+            if (fromLocation == null || !fromLocation.HasPeg)
                 continue;
             
             moves.Add(new Move
@@ -138,17 +90,53 @@ public class Board
         
         return moves;
     }
-
-    public List<Location> GetEmptySlots() => _locations.Where(l => l.HasSlot && !l.HasPeg).ToList();
     
-    #region GetLocation
-
-    public Location GetLocation(int x, int y) => _locations.Single(l => l.X == x && l.Y == y);
+    private bool SlotsAreAdjacent(Location l1, Location l2) => l1.Y == l2.Y && Math.Abs(l1.X - l2.X) == 2;
     
-    public Location? GetLocationOrDefault(int x, int y) => _locations.SingleOrDefault(l => l.X == x && l.Y == y);
+    private bool SlotsAreDiagonal(Location l1, Location l2) => Math.Abs(l1.X - l2.X) == 1 && Math.Abs(l1.Y - l2.Y) == 1;
     
-    #endregion
+    private List<Location> GetAdjacentPegs(Location location)
+    {
+        Guard.Against.Null(location);
 
+        return _locations.Where(l =>
+                l.HasPeg
+                && (SlotsAreAdjacent(l, location)
+                    || SlotsAreDiagonal(l, location)))
+            .ToList();
+    }
+    
+    public void MakeMove(Move move)
+    {
+        Guard.Against.Null(move);
+
+        RemovePeg(move.From);
+        RemovePeg(move.Over);
+        PlacePeg(move.To);
+        
+        _moves.Add(move);
+    }
+    
+    private void RemovePeg(Location location)
+    {
+        Guard.Against.Null(location);
+        
+        if (!location.HasSlot)
+            throw new Exception($"Unable to remove peg from location: X:{location.X}, Y:{location.Y}");
+        
+        location.HasPeg = false;
+    }
+
+    private void PlacePeg(Location location)
+    {
+        Guard.Against.Null(location);
+
+        if (!location.HasSlot)
+            throw new Exception($"Unable to add Peg. Location missing slot: X:{location.X}, Y:{location.Y}");
+        
+        location.HasPeg = true;
+    }
+    
     #region Utility
 
     public Board Clone()

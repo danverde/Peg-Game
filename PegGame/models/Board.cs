@@ -115,7 +115,7 @@ public class Board
         // Have to grab them again to make sure we're impacting the current board!
         Location from = GetSlot(move.From.X, move.From.Y);
         Location over = GetSlot(move.Over.X, move.Over.Y);
-        Location to = GetSlot(move.To.X, move.From.Y);
+        Location to = GetSlot(move.To.X, move.To.Y);
         
         RemovePeg(from);
         RemovePeg(over);

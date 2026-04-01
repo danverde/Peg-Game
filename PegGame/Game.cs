@@ -43,11 +43,11 @@ public class Game
         
         foreach (var board in boards)
         {
-            List<Location> emptySlots = board.GetEmptySlots();
+            List<Location> emptySlots = board.GetEmptyLocations();
 
             foreach (Location emptySlot in emptySlots)
             {
-                List<Move> possibleMoves = board.GetPossibleMovesForSlot(emptySlot);
+                List<Move> possibleMoves = board.GetPossibleMovesForLocation(emptySlot);
                 
                 foreach (Move possibleMove in possibleMoves)
                 {

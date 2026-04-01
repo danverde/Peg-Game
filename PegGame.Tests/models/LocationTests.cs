@@ -20,21 +20,16 @@ public class LocationTests
         // Arrange
         const int x = 0;
         const int y = 1;
-        const bool hasPeg = false;
-        const bool hasSlot = true;
+        const bool hasPeg = true;
         
         // Act
-        var result = new Location(x, y, hasSlot, hasPeg);
+        var result = new Location(x, y, hasPeg);
         
         // Assert
         result.X.Should().Be(x);
         result.Y.Should().Be(y);
         result.HasPeg.Should().Be(hasPeg);
-        result.HasSlot.Should().Be(hasSlot);
     }
     
-    
-    
-
     #endregion
 }

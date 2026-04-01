@@ -1,220 +1,85 @@
 [
   {
-    "X": -4,
-    "Y": 4
-  },
-  {
-    "X": -3,
-    "Y": 4
-  },
-  {
-    "X": -2,
-    "Y": 4
-  },
-  {
-    "X": -1,
-    "Y": 4
-  },
-  {
     "X": 0,
     "Y": 4,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 1,
-    "Y": 4
-  },
-  {
-    "X": 2,
-    "Y": 4
-  },
-  {
-    "X": 3,
-    "Y": 4
-  },
-  {
-    "X": 4,
-    "Y": 4
+    "HasPeg": true
   },
   
   
-  {
-    "X": -4,
-    "Y": 3
-  },
-  {
-    "X": -3,
-    "Y": 3
-  },
-  {
-    "X": -2,
-    "Y": 3
-  },
   {
     "X": -1,
     "Y": 3,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 0,
-    "Y": 3
-  },
-  {
-    "X": 1,
-    "Y": 3,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 2,
-    "Y": 3
-  },
-  {
-    "X": 3,
-    "Y": 3
-  },
-  {
-    "X": 4,
-    "Y": 3
-  },
-  
-  
-  {
-    "X": -4,
-    "Y": 2
-  },
-  {
-    "X": -3,
-    "Y": 2
-  },
-  {
-    "X": -2,
-    "Y": 2,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": -1,
-    "Y": 2
-  },
-  {
-    "X": 0,
-    "Y": 2,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 1,
-    "Y": 2
-  },
-  {
-    "X": 2,
-    "Y": 2,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 3,
-    "Y": 2
-  },
-  {
-    "X": 4,
-    "Y": 2
-  },
-  
-  
-  {
-    "X": -4,
-    "Y": 1
-  },
-  {
-    "X": -3,
-    "Y": 1,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": -2,
-    "Y": 1
-  },
-  {
-    "X": -1,
-    "Y": 1,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 0,
-    "Y": 1
-  },
-  {
-    "X": 1,
-    "Y": 1,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 2,
-    "Y": 1
-  },
-  {
-    "X": 3,
-    "Y": 1,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 4,
-    "Y": 1
-  },
-  
-  
-  {
-    "X": -4,
-    "Y": 0,
-    "HasSlot": true,
     "HasPeg": true
   },
   {
+    "X": 1,
+    "Y": 3,
+    "HasPeg": true
+  },
+  
+  
+  {
+    "X": -2,
+    "Y": 2,
+    "HasPeg": true
+  },
+  {
+    "X": 0,
+    "Y": 2,
+    "HasPeg": true
+  },
+  {
+    "X": 2,
+    "Y": 2,
+    "HasPeg": true
+  },
+  
+  
+  {
     "X": -3,
-    "Y": 0
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": -1,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 1,
+    "Y": 1,
+    "HasPeg": true
+  },
+  {
+    "X": 3,
+    "Y": 1,
+    "HasPeg": true
+  },
+  
+  
+  {
+    "X": -4,
+    "Y": 0,
+    "HasPeg": true
   },
   {
     "X": -2,
     "Y": 0,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": -1,
-    "Y": 0
+    "HasPeg": true
   },
   {
     "X": 0,
     "Y": 0,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 1,
-    "Y": 0
+    "HasPeg": true
   },
   {
     "X": 2,
     "Y": 0,
-    "HasPeg": true,
-    "HasSlot": true
-  },
-  {
-    "X": 3,
-    "Y": 0
+    "HasPeg": true
   },
   {
     "X": 4,
     "Y": 0,
-    "HasPeg": true,
-    "HasSlot": true
+    "HasPeg": true
   }
 ]

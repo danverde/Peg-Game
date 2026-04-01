@@ -18,7 +18,7 @@ public class Board
         Guard.Against.OutOfRange(y, nameof(y), -4, 4);
         
         _locations = LoadLocations();
-        Location startingLocation = GetSlot(x, y);
+        Location startingLocation = GetLocation(x, y);
         RemovePeg(startingLocation);
     }
 
@@ -42,30 +42,30 @@ public class Board
 
     public bool IsComplete() => _locations.Count(s => s.HasPeg) == 1;
 
-    public List<Location> GetEmptySlots() => _locations.Where(l => l.HasSlot && !l.HasPeg).ToList();
+    public List<Location> GetEmptyLocations() => _locations.Where(l => !l.HasPeg).ToList();
     
-    public Location GetSlot(int x, int y) => _locations.Single(l => l.HasSlot && l.X == x && l.Y == y);
+    public Location GetLocation(int x, int y) => _locations.Single(l => l.X == x && l.Y == y);
     
-    public Location? GetSlotOrDefault(int x, int y) => _locations.SingleOrDefault(l => l.HasSlot && l.X == x && l.Y == y);
+    public Location? GetLocationOrDefault(int x, int y) => _locations.SingleOrDefault(l => l.X == x && l.Y == y);
     
-    public List<Move> GetPossibleMovesForSlot(Location slot)
+    public List<Move> GetPossibleMovesForLocation(Location location)
     {
-        Guard.Against.Null(slot);
-        if (!slot.HasSlot || slot.HasPeg)
-            throw new ArgumentException($"Location does not have a slot, or has a peg: X:{slot.X}, Y:{slot.Y}", nameof(slot));
+        Guard.Against.Null(location);
+        if (location.HasPeg)
+            throw new ArgumentException($"Location has a peg: X:{location.X}, Y:{location.Y}", nameof(location));
         
         // get adjacent locations with pegs
-        List<Location> adjacentLocations = GetAdjacentPegs(slot);
+        List<Location> adjacentLocations = GetAdjacentPegs(location);
 
-        // Calculate moves based on slot and adjacent locations
+        // Calculate moves based on location and adjacent locations
         var moves = new List<Move>();
         foreach (Location adjacentLocation in adjacentLocations)
         {
-            int xDiff = Math.Abs(slot.X - adjacentLocation.X);
-            int yDiff = Math.Abs(slot.Y - adjacentLocation.Y);
+            int xDiff = Math.Abs(location.X - adjacentLocation.X);
+            int yDiff = Math.Abs(location.Y - adjacentLocation.Y);
             
-            bool xIsDecreasing = slot.X > adjacentLocation.X;
-            bool yIsDecreasing = slot.Y > adjacentLocation.Y;
+            bool xIsDecreasing = location.X > adjacentLocation.X;
+            bool yIsDecreasing = location.Y > adjacentLocation.Y;
 
             if (xIsDecreasing)
                 xDiff *= -1;
@@ -75,14 +75,14 @@ public class Board
             int x = adjacentLocation.X + xDiff;
             int y = adjacentLocation.Y + yDiff;
             
-            Location? fromLocation = GetSlotOrDefault(x, y);
+            Location? fromLocation = GetLocationOrDefault(x, y);
             
             if (fromLocation == null || !fromLocation.HasPeg)
                 continue;
             
             moves.Add(new Move
             {
-                To = slot,
+                To = location,
                 Over = adjacentLocation,
                 From = fromLocation,
             });
@@ -91,9 +91,9 @@ public class Board
         return moves;
     }
     
-    private bool SlotsAreAdjacent(Location l1, Location l2) => l1.Y == l2.Y && Math.Abs(l1.X - l2.X) == 2;
+    private bool LocationsAreAdjacent(Location l1, Location l2) => l1.Y == l2.Y && Math.Abs(l1.X - l2.X) == 2;
     
-    private bool SlotsAreDiagonal(Location l1, Location l2) => Math.Abs(l1.X - l2.X) == 1 && Math.Abs(l1.Y - l2.Y) == 1;
+    private bool LocationsAreDiagonal(Location l1, Location l2) => Math.Abs(l1.X - l2.X) == 1 && Math.Abs(l1.Y - l2.Y) == 1;
     
     private List<Location> GetAdjacentPegs(Location location)
     {
@@ -101,8 +101,8 @@ public class Board
 
         return _locations.Where(l =>
                 l.HasPeg
-                && (SlotsAreAdjacent(l, location)
-                    || SlotsAreDiagonal(l, location)))
+                && (LocationsAreAdjacent(l, location)
+                    || LocationsAreDiagonal(l, location)))
             .ToList();
     }
     
@@ -111,9 +111,9 @@ public class Board
         Guard.Against.Null(move);
 
         // Have to grab them again to make sure we're impacting the current board!
-        Location from = GetSlot(move.From.X, move.From.Y);
-        Location over = GetSlot(move.Over.X, move.Over.Y);
-        Location to = GetSlot(move.To.X, move.To.Y);
+        Location from = GetLocation(move.From.X, move.From.Y);
+        Location over = GetLocation(move.Over.X, move.Over.Y);
+        Location to = GetLocation(move.To.X, move.To.Y);
         
         RemovePeg(from);
         RemovePeg(over);
@@ -126,8 +126,8 @@ public class Board
     {
         Guard.Against.Null(location);
         
-        if (!location.HasSlot)
-            throw new Exception($"Unable to remove peg from location: X:{location.X}, Y:{location.Y}");
+        if (!location.HasPeg)
+            throw new Exception($"Cannot remove peg, location does not have peg: X:{location.X}, Y:{location.Y}");
         
         location.HasPeg = false;
     }
@@ -136,8 +136,8 @@ public class Board
     {
         Guard.Against.Null(location);
 
-        if (!location.HasSlot)
-            throw new Exception($"Unable to add Peg. Location missing slot: X:{location.X}, Y:{location.Y}");
+        if (location.HasPeg)
+            throw new Exception($"Location already has peg. Unable to place PegA: X:{location.X}, Y:{location.Y}");
         
         location.HasPeg = true;
     }
@@ -158,16 +158,17 @@ public class Board
     {
         Console.WriteLine("Board State:");
         
-        for (int i = 4; i >= 0; i--)
+        // Y
+        for (int y = 4; y >= 0; y--)
         {
-            var row = _locations
-                .Where(l => l.Y == i)
-                .Select(l => l.RenderChar())
-                .ToList();
-
-            if (row.Any())
-                Console.WriteLine(string.Join("", row));
+            var row = "";
+            for (int x = -4; x <= 4; x++)
+            {
+                Location? l = GetLocationOrDefault(x, y);
+                row += l?.RenderChar() ?? " ";
+            }
             
+            Console.WriteLine(row);
         }
         
         Console.WriteLine();

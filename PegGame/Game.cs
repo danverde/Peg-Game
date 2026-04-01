@@ -15,15 +15,15 @@ public class Game
         board.Render();
         
         // Recursively do the thing!
-        var allBoards = DoTheThing(new List<Board> {board});
+        var allBoards = CalculateMove(new List<Board> {board});
         
         var winningBoard = allBoards.FirstOrDefault(b => b.IsComplete());
 
         if (winningBoard == null)
         {
-            Console.WriteLine("No winning solution found");
+            Console.WriteLine("No winning solution found...");
             Debugger.Break();
-            throw new Exception("I broke");
+            throw new Exception("I broke!");
         }
             
         
@@ -31,12 +31,12 @@ public class Game
     }
 
     // private List<Board> DoTheThing(Board board, List<Board> allBoards)
-    private List<Board> DoTheThing(List<Board> boards, int callCount = 0)
+    private List<Board> CalculateMove(List<Board> boards, int callCount = 1)
     {
-        if (callCount == 20)
-            throw new Exception("infinite loop detected");
+        if (callCount == 15)
+            throw new Exception("Too many moves! A solution should have been found by now!");
 
-        Console.WriteLine($"Call Count: {callCount}");
+        Console.WriteLine($"Moves calculated: {callCount}");
         callCount++;
 
         var newBoards = new List<Board>();
@@ -62,7 +62,7 @@ public class Game
         if (newBoards.Any(b => b.IsComplete()))
             return boards;
         else
-            return DoTheThing(newBoards, callCount);
+            return CalculateMove(newBoards, callCount);
     }
     
 }

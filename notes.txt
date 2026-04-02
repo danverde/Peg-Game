@@ -1,14 +1,98 @@
 
-        X
+        A
       X   X
-    D   X   D
-  X   X   X   X 
-X   X   O   X   X
+    A   X   O
+  X   X   O   X 
+X   X   A   X   O
+
+
+SOLUTION:
+[
+  {
+    num: 1
+    from: -2, 3
+    to: 0, 5
+    over: -1, 4
+  },
+  {
+    num: 2
+    from: 2, 3
+    to: -2, 3
+    over: 0, 3
+  },
+  {
+    num: 3
+    from: 0, 5
+    to: 2, 3
+    over: 1, 4
+  },
+  {
+    num: 4
+    from: -3, 2
+    to: -1, 4
+    over: -2, 3
+  },
+  {
+    num: 5
+    from: 3, 2
+    to: 1, 4
+    over: 2, 3
+  },
+  {
+    num: 6
+    from: 0, 0
+    to: -2, 2
+    over: -1, 1
+  },
+  {
+    num: 7
+    from: -2, 2
+    to: 0, 5
+    over: -1, 4
+  },
+  {
+    num: 8
+    from: 0, 4
+    to: 2, 2
+    over: 1, 3
+  },
+  {
+    num: 9
+    from: -4, 0
+    to: 0, 0
+    over: -2, 0
+  },
+  {
+    num: 10
+    from: 2, 0
+    to: -2, 0
+    over: 0, 0
+  },
+  {
+    num: 11
+    from: 2, 2
+    to: 0, 0
+    over: 1, 1
+  },
+  {
+    num: 12
+    from: -2, 0
+    to: 2, 0
+    over: 0, 0
+  },
+  {
+    num: 13
+    from: 4, 0
+    to: 0, 0
+    over: 2, 0
+  }
+]
 
 
 Find Next: 
 0,0 -> 2,0 => 
 0,0 -> -2,0 => 
+
 
 Diagonal:
 0,0 -> 1,1 -> 2,2

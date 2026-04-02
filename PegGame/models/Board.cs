@@ -12,6 +12,8 @@ public class Board
     private readonly List<Location> _locations = new ();
     private List<Move> _moves = [];
     
+    public Board() { }
+    
     public Board(int x, int y)
     {
         Guard.Against.OutOfRange(x, nameof(x), -4, 4);
@@ -21,9 +23,6 @@ public class Board
         Location startingLocation = GetLocation(x, y);
         RemovePeg(startingLocation);
     }
-
-    [JsonConstructor]
-    public Board() { }
 
     #region Setup Methods
 
@@ -165,7 +164,7 @@ public class Board
             for (int x = -4; x <= 4; x++)
             {
                 Location? l = GetLocationOrDefault(x, y);
-                row += l?.RenderChar() ?? " ";
+                row += Location.RenderChar(l);
             }
             
             Console.WriteLine(row);
@@ -173,7 +172,6 @@ public class Board
         
         Console.WriteLine();
     }
-    
+
     #endregion
-    
 }

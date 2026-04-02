@@ -15,5 +15,11 @@ public class Location
     public int Y { get; set; }
     public bool HasPeg { get; set; } 
 
-    public string RenderChar() => HasPeg ? "X" : "O";
+    public static string RenderChar(Location? l)
+    {
+        if (l is null)
+            return " ";
+        
+        return l.HasPeg ? "X" : "O";
+    }
 }

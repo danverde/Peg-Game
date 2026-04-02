@@ -30,7 +30,6 @@ public class Game
         return winningBoard.Moves.ToList();
     }
 
-    // private List<Board> DoTheThing(Board board, List<Board> allBoards)
     private List<Board> CalculateMove(List<Board> boards, int callCount = 1)
     {
         if (callCount == 15)

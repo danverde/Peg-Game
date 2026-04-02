@@ -38,6 +38,12 @@ public class Game
         Console.WriteLine($"Moves calculated: {callCount}");
         callCount++;
 
+        // Remove duplicate boards for significant performance gains
+        Console.WriteLine($"Board Count: {boards.Count}");
+        boards = boards.DistinctBy(b => b.GetRenderString()).ToList();
+        Console.WriteLine($"Board Count: {boards.Count}");
+        
+
         var newBoards = new List<Board>();
         
         foreach (var board in boards)

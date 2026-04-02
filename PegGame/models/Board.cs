@@ -156,21 +156,27 @@ public class Board
     internal void Render()
     {
         Console.WriteLine("Board State:");
+        Console.Write(GetRenderString());
+        Console.WriteLine();
+    }
+
+    public string GetRenderString()
+    {
+        var renderString = "";
         
-        // Y
         for (int y = 4; y >= 0; y--)
         {
-            var row = "";
             for (int x = -4; x <= 4; x++)
             {
                 Location? l = GetLocationOrDefault(x, y);
-                row += Location.RenderChar(l);
+                renderString += Location.RenderChar(l);
             }
-            
-            Console.WriteLine(row);
+
+            if (y > 0)
+                renderString += "\n";
         }
-        
-        Console.WriteLine();
+
+        return renderString;
     }
 
     #endregion

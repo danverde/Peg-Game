@@ -15,35 +15,34 @@ public class Game
         board.Render();
         
         // Recursively do the thing!
-        var allBoards = CalculateMove(new List<Board> {board});
+        List<Board> allBoards = CalculateMoves([board]);
         
         var winningBoard = allBoards.FirstOrDefault(b => b.IsComplete());
-
         if (winningBoard == null)
         {
             Console.WriteLine("No winning solution found...");
-            Debugger.Break();
             throw new Exception("I broke!");
         }
-            
         
         return winningBoard.Moves.ToList();
     }
 
-    private List<Board> CalculateMove(List<Board> boards, int callCount = 1)
+    private List<Board> CalculateMoves(List<Board> boards, bool removeDuplicates = true, int callCount = 1)
     {
-        if (callCount == 15)
+        if (callCount == 14)
             throw new Exception("Too many moves! A solution should have been found by now!");
 
         Console.WriteLine($"Moves calculated: {callCount}");
         callCount++;
+        Console.WriteLine($"Board Count: {boards.Count}");
 
         // Remove duplicate boards for significant performance gains
-        Console.WriteLine($"Board Count: {boards.Count}");
-        boards = boards.DistinctBy(b => b.GetRenderString()).ToList();
-        Console.WriteLine($"Board Count: {boards.Count}");
+        if (removeDuplicates)
+        {
+            boards = boards.DistinctBy(b => b.GetRenderString()).ToList();
+            Console.WriteLine($"Board Count: {boards.Count}");
+        }
         
-
         var newBoards = new List<Board>();
         
         foreach (var board in boards)
@@ -67,7 +66,7 @@ public class Game
         if (newBoards.Any(b => b.IsComplete()))
             return boards;
         else
-            return CalculateMove(newBoards, callCount);
+            return CalculateMoves(newBoards, removeDuplicates, callCount);
     }
     
 }
